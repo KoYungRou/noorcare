@@ -1,5 +1,7 @@
 # NoorCare
 
+**Hack-Nation 7th Global AI Hackathon — World Bank: Small AI for Development (Track A: Health)**
+
 **Offline-first AI communication support for multilingual healthcare
 settings.**
 
@@ -13,8 +15,31 @@ locally on the device: speech recognition, translation, and structured
 information extraction. The resulting note is always presented for human
 review before it can be confirmed.
 
-> **Challenge:** World Bank --- Small AI for Development\
-> **Track:** Track A: Health
+------------------------------------------------------------------------
+
+## Hackathon Challenge
+
+NoorCare was developed for the **Hack-Nation 7th Global AI Hackathon** under:
+
+**04a — World Bank: Small AI for Development (Track A: Health)**
+
+The challenge focuses on building targeted, offline-capable AI solutions
+for environments where connectivity, devices, and infrastructure may be
+constrained.
+
+NoorCare addresses this challenge through a browser-based, on-device AI
+workflow designed to support communication between patients and healthcare
+workers across language barriers.
+
+Once the required application resources and AI models are available locally,
+NoorCare's core pipeline can operate without a cloud inference API. Patient
+speech can be transcribed, translated, and converted into a structured note
+directly on the device.
+
+The language model is used only for **structured information extraction from
+the translated patient-reported text**. It is not used to diagnose conditions,
+make medical decisions, or recommend treatment. The resulting note is intended
+for human review by healthcare personnel.
 
 ------------------------------------------------------------------------
 
