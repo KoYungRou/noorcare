@@ -1,0 +1,61 @@
+# -----------------------------
+# macOS
+# -----------------------------
+.DS_Store
+
+
+# -----------------------------
+# Node dependencies
+# -----------------------------
+node_modules/
+
+
+# -----------------------------
+# Python environments
+# -----------------------------
+.venv/
+venv/
+.hf-venv/
+__pycache__/
+*.pyc
+
+
+# -----------------------------
+# Hugging Face download caches
+# -----------------------------
+**/.cache/
+.cache/
+
+
+# -----------------------------
+# Logs
+# -----------------------------
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+
+# -----------------------------
+# Editor / IDE
+# -----------------------------
+.vscode/
+.idea/
+
+
+# -----------------------------
+# Local / temporary files
+# -----------------------------
+*.tmp
+*.temp
+*.swp
+
+
+# -----------------------------
+# Large local AI model binaries
+# -----------------------------
+models/**/*.onnx
+models/**/*.onnx_data
+models/**/*.bin
+models/**/*.safetensors
+models/**/*.gguf

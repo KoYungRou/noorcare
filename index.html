@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>NoorCare</title>
+
+  <link rel="stylesheet" href="./css/app.css" />
+  <link
+    rel="manifest"
+    href="./manifest.json"
+  />
+
+  <meta
+    name="theme-color"
+    content="#176b5b"
+  />
+  <link
+    rel="icon"
+    type="image/png"
+    sizes="32x32"
+    href="/icons/favicon-32x32.png"
+  >
+
+  <link
+    rel="icon"
+    type="image/png"
+    sizes="16x16"
+    href="/icons/favicon-16x16.png"
+  >
+
+  <link
+    rel="apple-touch-icon"
+    sizes="180x180"
+    href="/icons/apple-touch-icon.png"
+  >
+
+</head>
+
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <div class="logo">N</div>
+
+    <div>
+      <h1>NoorCare</h1>
+      <p>Offline Care Communication</p>
+    </div>
+  </div>
+
+  <div
+  id="connectionStatus"
+  class="connection-status"
+    >
+  <span class="status-dot"></span>
+
+  <span id="connectionStatusText">
+    Checking...
+  </span>
+  </div>
+
+
+</header>
+
+<main class="container">
+    <nav class="app-nav">
+
+    <button
+        id="newVisitNav"
+        class="nav-btn active"
+    >
+        + New Visit
+    </button>
+
+    <button
+        id="recordsNav"
+        class="nav-btn"
+    >
+        Records
+        <span id="recordCount" class="record-count">0</span>
+    </button>
+
+    </nav>
+  <!-- STEP INDICATOR -->
+
+  <section class="steps">
+
+    <div class="step active" data-step="1">
+      <span>1</span>
+      Patient
+    </div>
+
+    <div class="step-line"></div>
+
+    <div class="step" data-step="2">
+      <span>2</span>
+      Clinician
+    </div>
+
+    <div class="step-line"></div>
+
+    <div class="step" data-step="3">
+      <span>3</span>
+      Follow-up
+    </div>
+
+  </section>
+
+
+  <!-- ========================= -->
+  <!-- PATIENT SCREEN -->
+  <!-- ========================= -->
+
+  <section id="patientScreen" class="screen active">
+
+    <div class="card">
+
+      <div class="section-label">
+        PATIENT
+      </div>
+
+      <h2>用自己的語言描述你的情況</h2>
+
+      <p class="description">
+        你的訊息會在裝置上處理，並整理給醫護人員確認。
+      </p>
+
+
+      <div class="language-row">
+
+        <div>
+          <label>Patient language</label>
+
+          <select id="patientLanguage">
+            <option value="zh">中文（普通話）</option>
+          </select>
+        </div>
+
+        <div class="arrow">
+          →
+        </div>
+
+        <div>
+          <label>Clinician language</label>
+
+          <select>
+            <option>English</option>
+          </select>
+        </div>
+
+      </div>
+
+
+      <label class="input-label">
+        Patient message
+      </label>
+
+      <textarea
+        id="patientInput"
+        placeholder="例如：我頭痛已經三天了，昨天晚上開始發燒。"
+      ></textarea>
+      <div class="voice-input">
+
+        <button
+            id="voiceBtn"
+            class="voice-btn"
+            type="button"
+        >
+            <span class="voice-icon">🎙</span>
+            <span id="voiceBtnText">用中文說話</span>
+        </button>
+
+        <div
+            id="voiceStatus"
+            class="voice-status"
+        >
+            麥克風尚未啟動
+        </div>
+        <div
+        id="voiceReview"
+        class="voice-review hidden"
+        >
+        <div class="voice-review-header">
+            <span class="voice-review-icon">✓</span>
+
+            <div>
+            <strong>錄音完成</strong>
+            <p>你可以重播錄音，並確認下方辨識文字。</p>
+            </div>
+        </div>
+
+        <audio
+            id="voiceAudioPlayer"
+            controls
+            preload="metadata"
+        ></audio>
+        </div>
+
+        </div>
+
+
+      <div class="privacy-note">
+        🔒 No name or account required. Information stays on this device.
+      </div>
+
+
+      <button
+        id="prepareBtn"
+        class="primary-btn"
+      >
+        Translate & Prepare Note
+      </button>
+    <div class="local-ai-notice">
+
+    <div class="local-ai-icon">
+        ◉
+    </div>
+
+    <div>
+
+        <strong>
+        AI runs on this device
+        </strong>
+
+        <p>
+        Translation and note preparation run locally.
+        Patient text is not sent to a cloud AI service.
+        </p>
+
+    </div>
+
+    </div>
+    </div>
+
+  </section>
+
+
+
+  <!-- ========================= -->
+  <!-- CLINICIAN SCREEN -->
+  <!-- ========================= -->
+
+  <section id="clinicianScreen" class="screen">
+
+    <div class="card">
+
+      <div class="section-label">
+        CLINICIAN REVIEW
+      </div>
+
+      <h2>Patient-reported information</h2>
+
+      <p class="description">
+        AI has translated and structured the patient's message.
+        Review everything before confirming.
+      </p>
+
+
+      <div class="translation-box">
+
+        <span class="small-label">
+          ORIGINAL — 中文
+        </span>
+
+        <p id="originalText"></p>
+
+
+        <span class="small-label">
+          TRANSLATION — ENGLISH
+        </span>
+
+        <p id="translatedText"></p>
+
+      </div>
+
+
+      <div class="note-card">
+
+        <h3>AI-Prepared Note</h3>
+
+
+        <label>
+          Reported concerns
+        </label>
+
+        <textarea id="concerns"></textarea>
+
+
+        <label>
+          Duration mentioned
+        </label>
+
+        <textarea id="duration"></textarea>
+
+
+        <label>
+          Additional information
+        </label>
+
+        <textarea id="additional"></textarea>
+
+      </div>
+
+
+      <div class="warning">
+
+        <strong>Human review required</strong>
+
+        <p>
+          This tool organizes patient-reported information.
+          It does not diagnose conditions or recommend treatment.
+        </p>
+
+      </div>
+
+
+      <div class="button-row">
+
+        <button
+          id="backBtn"
+          class="secondary-btn"
+        >
+          Back
+        </button>
+
+        <button
+          id="confirmBtn"
+          class="primary-btn"
+        >
+          Confirm Note
+        </button>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- ========================= -->
+  <!-- FOLLOW UP SCREEN -->
+  <!-- ========================= -->
+
+  <section id="followupScreen" class="screen">
+
+    <div class="card">
+
+      <div class="section-label">
+        FOLLOW-UP
+      </div>
+
+      <h2>Instructions for the patient</h2>
+      <div
+        id="visitBadge"
+        class="visit-badge"
+        >
+        </div>
+
+      <p class="description">
+        Enter the instructions confirmed by the healthcare worker.
+      </p>
+
+
+      <label class="input-label">
+        Clinician instruction — English
+      </label>
+
+      <textarea
+        id="followupInput"
+        placeholder="Example: Please return to the clinic next Tuesday."
+      ></textarea>
+
+
+      <button
+        id="translateFollowupBtn"
+        class="primary-btn"
+      >
+        Translate for Patient
+      </button>
+
+
+      <div
+        id="patientResult"
+        class="patient-result hidden"
+      >
+
+        <span class="small-label">
+          PATIENT VERSION — 中文
+        </span>
+
+        <p id="followupTranslation"></p>
+
+
+        <div class="confirmed">
+          ✓ Confirmed by healthcare worker
+        </div>
+
+
+        <div class="saved">
+          🔒 Saved to this device
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+  <!-- ========================= -->
+<!-- RECORDS SCREEN -->
+<!-- ========================= -->
+
+<section id="recordsScreen" class="screen">
+
+  <div class="records-header">
+
+    <div>
+      <div class="section-label">
+        LOCAL RECORDS
+      </div>
+
+      <h2>Visit History</h2>
+
+      <p class="description">
+        Only clinician-confirmed information is shown here.
+        Records are stored on this device.
+      </p>
+    </div>
+
+  </div>
+
+
+  <div class="privacy-banner">
+
+  <div>
+
+    <strong>
+      🔒 Prototype local storage
+    </strong>
+
+    <p>
+      Confirmed visit records are stored in this browser
+      and are not uploaded to a cloud server.
+    </p>
+
+    <p class="privacy-warning">
+      This prototype does not encrypt records or provide
+      user authentication. On a shared or lost device,
+      locally stored information may be accessible to others.
+    </p>
+
+  </div>
+
+  </div>
+
+
+  <div id="recordsList"></div>
+  <div
+    id="recordsDangerZone"
+    class="records-danger-zone"
+  >
+
+    <div>
+
+        <strong>
+        Local data controls
+        </strong>
+
+        <p>
+        Permanently remove all confirmed visit records
+        stored by NoorCare in this browser.
+        </p>
+
+    </div>
+
+
+    <button
+        id="deleteAllRecordsBtn"
+        class="delete-all-btn"
+    >
+        Delete all local records
+    </button>
+
+    </div>
+
+  <div
+    id="emptyRecords"
+    class="empty-records"
+  >
+
+    <div class="empty-icon">
+      📋
+    </div>
+
+    <h3>No confirmed visits yet</h3>
+
+    <p>
+      Clinician-confirmed visits will appear here.
+    </p>
+
+  </div>
+
+</section>
+
+</main>
+
+
+<footer>
+  NoorCare Prototype · Documentation assistance only
+</footer>
+
+
+
+<script type="module" src="./js/app.js"></script>
+
+</body>
+</html>
