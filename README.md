@@ -320,15 +320,27 @@ using the package manager used by the project:
 npm install
 ```
 
-### 3. Verify local model assets
+### 3. Download the local AI models
 
-The prototype expects local model directories for the AI pipeline. The
-exact repository packaging strategy may vary because model binaries can
-be large.
+Large ONNX model weights are intentionally excluded from the Git
+repository because of their file size.
 
-Typical structure:
+Download the required local model weights with:
 
-``` text
+```bash
+npm run setup-models
+```
+
+The setup script prepares the ONNX model files required by NoorCare for:
+
+Whisper Base for Mandarin speech recognition;
+MarianMT / OPUS-MT for Chinese → English translation;
+MarianMT / OPUS-MT for English → Chinese translation; and
+Qwen 2.5 0.5B Instruct for structured information extraction.
+
+The model files are downloaded into the corresponding local directories:
+
+```bash
 models/
 ├── whisper-base/
 ├── opus-mt-zh-en/
@@ -336,24 +348,17 @@ models/
 └── qwen-extractor/
 ```
 
-For Qwen, the local directory includes tokenizer/configuration assets
-and the quantized ONNX model, for example:
+The repository already contains the smaller tokenizer and configuration
+assets required by the application. The setup command downloads the
+large ONNX model weights that are excluded from Git.
 
-``` text
-models/qwen-extractor/
-├── config.json
-├── generation_config.json
-├── merges.txt
-├── tokenizer.json
-├── tokenizer_config.json
-├── vocab.json
-└── onnx/
-    └── model_q4.onnx
-```
+Existing model files are skipped, so the command can be run again
+without unnecessarily downloading models that are already present.
 
-> If large model files are not committed to the Git repository, follow
-> the model setup instructions supplied with the repository before
-> launching NoorCare.
+An internet connection is required for the initial model download.
+After the required application and model resources are available and
+cached locally, NoorCare's core AI inference does not require a cloud
+AI service.
 
 ### 4. Start a local server
 
@@ -415,6 +420,8 @@ noorcare/
 │   ├── opus-mt-zh-en/
 │   ├── opus-mt-en-zh/
 │   └── qwen-extractor/
+├── scripts/
+│   └── setup-models.mjs
 ├── vendor/
 │   └── onnx/
 └── node_modules/
@@ -444,6 +451,11 @@ Handles locally stored confirmed visit and follow-up records.
 
 **`sw.js`**\
 Provides the application's offline caching behavior.
+
+**`scripts/setup-models.mjs`**  
+Downloads the large ONNX model weights required by NoorCare from
+pinned model revisions while skipping model files that are already
+present.
 
 ------------------------------------------------------------------------
 
@@ -572,9 +584,9 @@ A concise demonstration of NoorCare:
 
 ## Repository and Live Demo
 
-**GitHub:** `<YOUR_GITHUB_REPOSITORY_URL>`
+**GitHub:** https://github.com/KoYungRou/noorcare
 
-**Live project:** `<YOUR_LIVE_PROJECT_URL>`
+**Live project:** Coming soon
 
 Replace these placeholders before submission.
 
@@ -584,15 +596,9 @@ Replace these placeholders before submission.
 
 **Project:** NoorCare
 
-Add the team members, roles, and a short description here before
-submission.
+Yung-Rou(Zoe) Ko - Product / Engineering / Design / Research / Healthcare 
 
-Example:
-
-``` text
-Name — Product / Engineering / Design
-Name — Research / Healthcare / Engineering
-```
+AI/ML engineer | MSIS @ Northeastern | intern @ IBM, TSMC, Shopback, Deepthink Health
 
 ------------------------------------------------------------------------
 
