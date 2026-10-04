@@ -586,7 +586,7 @@ A concise demonstration of NoorCare:
 
 **GitHub:** https://github.com/KoYungRou/noorcare
 
-**Live project:** Coming soon
+**Demo project:** https://youtu.be/aa3iKackza4
 
 Replace these placeholders before submission.
 
